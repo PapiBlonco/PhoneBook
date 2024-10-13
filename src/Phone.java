@@ -54,7 +54,7 @@ public class Phone extends javax.swing.JFrame {
         javax.swing.JButton btnSort = new javax.swing.JButton();
         javax.swing.JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
         tableContacts = new javax.swing.JTable();
-        btnSearch = new javax.swing.JButton();
+        javax.swing.JButton btnSearch = new javax.swing.JButton();
         tfSearch = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -151,6 +151,11 @@ public class Phone extends javax.swing.JFrame {
         btnSearch.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSearch.setIcon(new javax.swing.ImageIcon("C:\\Users\\there\\Downloads\\icons8-search-24.png")); // NOI18N
         btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         tfSearch.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
 
@@ -198,19 +203,12 @@ public class Phone extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(34, 34, 34)
-                .addComponent(btnSearch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(tfSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tfName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDelete)
-                            .addComponent(btnSort))
+                        .addGap(80, 80, 80)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -227,12 +225,20 @@ public class Phone extends javax.swing.JFrame {
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tfTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 165, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnAdd)
                             .addComponent(btnClear)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSearch)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(tfSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnDelete)
+                            .addComponent(btnSort))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(20, 20, 20))
         );
@@ -369,6 +375,38 @@ public class Phone extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnSortActionPerformed
 
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        String searchQuery = tfSearch.getText().trim(); // Get the search query from the text field
+    DefaultTableModel model = (DefaultTableModel) tableContacts.getModel();
+    boolean found = false;
+
+    // Clear previous search results (if any)
+    for (int i = 0; i < model.getRowCount(); i++) {
+        model.removeRow(0);
+    }
+
+    // Search for the contact
+    for (int i = 0; i < model.getRowCount(); i++) {
+        String name = (String) model.getValueAt(i, 0);
+        String email = (String) model.getValueAt(i, 1);
+        String phone = (String) model.getValueAt(i, 2);
+        String address = (String) model.getValueAt(i, 3);
+        String title = (String) model.getValueAt(i, 4);
+
+        // Check if the search query matches any of the contact details
+        if (name.equalsIgnoreCase(searchQuery) || email.equalsIgnoreCase(searchQuery) || 
+            phone.equals(searchQuery) || address.equalsIgnoreCase(searchQuery) || 
+            title.equalsIgnoreCase(searchQuery)) {
+            model.addRow(new Object[]{name, email, phone, address, title});
+            found = true;
+        }
+    }
+
+    if (!found) {
+        JOptionPane.showMessageDialog(this, "Contact not found: " + searchQuery, "Search Result", JOptionPane.INFORMATION_MESSAGE);
+    }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
     // Merge Sort Implementation
     private void mergeSort(String[][] array, int left, int right) {
         if (left < right) {
@@ -463,7 +501,6 @@ public class Phone extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSearch;
     private javax.swing.JTable tableContacts;
     private javax.swing.JTextField tfAddress;
     private javax.swing.JTextField tfEmail;
