@@ -4,19 +4,22 @@ import java.util.Scanner;
 
 class Contact {
     String name;
-    String number;
+    String phone;
     String address;
+    String email;
+    String title;
 
-
-    public Contact(String name, String number, String address) {
+    public Contact(String name, String email, String phone, String address, String title) {
         this.name = name;
-        this.number = number;
-        this.address = "";
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.title = title;
     }
 
     @Override
     public String toString() {
-        return "Name: " + name + ", Number: " + number + ", Address: " + address;
+        return "Name: " + name + ", Email: " + email + ", Phone: " + phone + ", Address: " + address + ", Title: " + title;
     }
 }
 
@@ -28,9 +31,9 @@ public class PhoneBook {
     }
 
     // Method to add a new contact
-    public void addContact(String name, String number, String address) {
-        contacts.add(new Contact(name, number, address));
-        System.out.println("Contact added: " + name + " - " + number + " - " + address);
+    public void addContact(String name, String email, String phone, String address, String title) {
+        contacts.add(new Contact(name, email, phone, address, title));
+        System.out.println("Contact added: " + name + " - " + email + " - " + phone + " - " + address + " - " + title);
     }
 
     // Method to display all contacts
@@ -49,7 +52,7 @@ public class PhoneBook {
     public void deleteContact(String query) {
         boolean found = false;
         for (Contact contact : contacts) {
-            if (contact.name.equalsIgnoreCase(query) || contact.number.equals(query)) {
+            if (contact.name.equalsIgnoreCase(query) || contact.phone.equals(query)) {
                 contacts.remove(contact);
                 System.out.println("Contact deleted: " + contact);
                 found = true;
@@ -64,7 +67,7 @@ public class PhoneBook {
     // Method to search for a contact by name or number
     public void searchContact(String query) {
         for (Contact contact : contacts) {
-            if (contact.name.equalsIgnoreCase(query) || contact.number.equals(query)) {
+            if (contact.name.equalsIgnoreCase(query) || contact.phone.equals(query)) {
                 System.out.println("Contact found: " + contact);
                 return; // End search if contact is found
             }
@@ -75,27 +78,47 @@ public class PhoneBook {
     // Method to update a contact's details
     public void updateContact(String query) {
         for (Contact contact : contacts) {
-            if (contact.name.equalsIgnoreCase(query) || contact.number.equals(query) || contact.address.equals(query)) {
+            if (contact.name.equalsIgnoreCase(query) || contact.email.equals(query) || contact.phone.equals(query) || contact.address.equals(query) || contact.title.equals(query)) {
                 Scanner scanner = new Scanner(System.in);
                 System.out.print("Enter the new name (or press Enter to keep the current name): ");
                 String newName = scanner.nextLine();
+                System.out.print("Enter the new email (or press Enter to keep the current email): ");
+                String newEmail = scanner.nextLine();
                 System.out.print("Enter the new number (or press Enter to keep the current number): ");
-                String newNumber = scanner.nextLine();
+                String newPhone = scanner.nextLine();
+                System.out.print("Enter the new address (or press Enter to keep the current address): ");
+                String newAdress = scanner.nextLine();
+                System.out.print("Enter the new title (or press Enter to keep the current title): ");
+                String newTitle = scanner.nextLine();
 
                 // Update name if newName is not empty
                 if (!newName.isEmpty()) {
                     contact.name = newName;
                 }
+                // Update email if newEmail is not empty
+                if (!newEmail.isEmpty()) {
+                    contact.email = newEmail;
+                }
                 // Update number if newNumber is not empty
-                if (!newNumber.isEmpty()) {
-                    contact.number = newNumber;
+                if (!newPhone.isEmpty()) {
+                    contact.phone = newPhone;
+                }
+                // Update address if newAdress is not empty
+                if (!newName.isEmpty()) {
+                    contact.address = newAdress;
+                }
+                // Update title if newTitle is not empty
+                if (!newTitle.isEmpty()) {
+                    contact.title = newTitle;
                 }
 
                 System.out.println("Contact updated: " + contact);
                 return; // End method after updating
+                
             }
         }
         System.out.println("Contact not found: " + query);
+        scanner.close();
     }
 
     // Merge sort method
